@@ -16,7 +16,16 @@ let connectDb = true;
 dotenv.config();
 
 interface MulterRequest extends Request {
-    file: any;
+    file: {
+        originalname: string;
+    }
+}
+
+interface User extends ResultSetHeader {
+    password: string;
+    email: string;
+    avatar: string;
+    avatar_name: string;
 }
 
 const connection = mysql.createConnection({
@@ -85,7 +94,7 @@ app.get("/users", async (req, res, next) => {
                     return reject(error);
                 }
                 if (results && results.length) {
-                    results.map((obj: any) => {
+                    results.map((obj: User) => {
                         obj.avatar = req.protocol + '://' + req.get('host') + '/uploads/' + obj.avatar_name;
                         return obj;
                     });
@@ -133,7 +142,7 @@ app.get("/users/:id", (req, res, next) => {
             "SELECT username, email, first_name, last_name, avatar_name FROM `docker_users` WHERE id=?",
             [id],
             (err, results, fields) => {
-                let data: any = {};
+                let data: User;
                 if (results && results[0]) {
                     const user = results[0];
                     data = user;
@@ -280,16 +289,15 @@ app.post("/login", function (req, res, next) {
     connection.execute(
         "SELECT * FROM `docker_users` WHERE email=?",
         [req.body.email],
-        function (err, users, fields) {
+        function (err, users: User[], fields) {
             if (err) {
                 res.json({ status: "error", message: err });
                 return;
             }
-            // TODO: Find solution
-            // if (users.length === 0) {
-            //     res.json({ status: "error", message: "no user found" });
-            //     return;
-            // }
+            if (users.length === 0) {
+                res.json({ status: "error", message: "no user found" });
+                return;
+            }
 
             bcrypt.compare(
                 req.body.password,
