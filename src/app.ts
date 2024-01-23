@@ -65,9 +65,9 @@ app.use(express.static('public'));
 // get users
 app.get("/users", async (req, res, next) => {
     const sqlTotalString =
-        "SELECT COUNT(*) as totalUser FROM `docker_users` WHERE user_status = ?";
+        "SELECT COUNT(*) as totalUser FROM `users` WHERE user_status = ?";
     const sqlDataString =
-        "SELECT * FROM `docker_users` WHERE user_status = ? limit ? offset ?";
+        "SELECT * FROM `users` WHERE user_status = ? limit ? offset ?";
 
     let { reqPage, reqLimit } = req.query;
 
@@ -139,7 +139,7 @@ app.get("/users/:id", (req, res, next) => {
     const id = req.params.id;
     if (id && connectDb) {
         connection.query(
-            "SELECT username, email, first_name, last_name, avatar_name FROM `docker_users` WHERE id=?",
+            "SELECT username, email, first_name, last_name, avatar_name FROM `users` WHERE id=?",
             [id],
             (err, results, fields) => {
                 let data: User;
@@ -167,7 +167,7 @@ app.post("/users/create", (req, res, next) => {
     try {
         bcrypt.hash(password, saltRounds, function (err, hash) {
             connection.query(
-                "INSERT INTO docker_users(username, password, email, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO users(username, password, email, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
                 [username, hash, email, first_name, last_name],
                 (err, results, fields) => {
                     if (err) {
@@ -192,7 +192,7 @@ app.put("/users/update", function (req, res, next) {
     const { email, first_name, last_name, username } = req.body;
     try {
         connection.query(
-            "UPDATE docker_users SET email = ?, first_name = ?, last_name = ? WHERE username = ?",
+            "UPDATE users SET email = ?, first_name = ?, last_name = ? WHERE username = ?",
             [email, first_name, last_name, username],
             (err, results, fields) => {
                 if (err) {
@@ -219,7 +219,7 @@ app.post("/users/update-avatar", upload.single('avatar'), async (req: MulterRequ
 
     try {
         connection.query(
-            "UPDATE docker_users SET avatar_name = ? WHERE id = ?",
+            "UPDATE users SET avatar_name = ? WHERE id = ?",
             [newFileName, id],
             (err, results, fields) => {
                 if (err) {
@@ -241,7 +241,7 @@ app.delete("/users/delete/:id", function (req, res, next) {
     const id = req.params.id;
     try {
         connection.query(
-            "DELETE FROM docker_users WHERE id=?",
+            "DELETE FROM users WHERE id=?",
             [id],
             (err, results, fields) => {
                 if (err) {
@@ -265,7 +265,7 @@ app.post("/register", function (req, res, next) {
     try {
         bcrypt.hash(password, saltRounds, function (err, hash) {
             connection.query(
-                "INSERT INTO docker_users(username, password, email, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO users(username, password, email, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
                 [email, hash, email, first_name, last_name],
                 (err, results, fields) => {
                     if (err) {
@@ -287,7 +287,7 @@ app.post("/register", function (req, res, next) {
 
 app.post("/login", function (req, res, next) {
     connection.execute(
-        "SELECT * FROM `docker_users` WHERE email=?",
+        "SELECT * FROM `users` WHERE email=?",
         [req.body.email],
         function (err, users: User[], fields) {
             if (err) {
