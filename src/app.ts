@@ -75,7 +75,7 @@ app.get("/users", async (req, res, next) => {
     const limit = parseInt((reqLimit || '5').toString());
 
     const offset = (page - 1) * limit;
-    const values = ["1", +limit, +offset];
+    const values = ["1", limit, offset];
 
     try {
         const totalUser = await new Promise((resolve, reject) => {
