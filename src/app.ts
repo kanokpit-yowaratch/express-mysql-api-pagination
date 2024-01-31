@@ -69,7 +69,10 @@ app.get("/users", async (req, res, next) => {
     const sqlDataString =
         "SELECT * FROM `users` WHERE user_status = ? limit ? offset ?";
 
-    const { page, limit }: any = req.query;
+    let { page, limit }: any = req.query;
+
+    page = page || 0;
+    limit = limit || 5;
 
     const pageIndex = parseInt(page);
     const limitNum = parseInt(limit);
