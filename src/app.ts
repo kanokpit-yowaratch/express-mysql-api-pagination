@@ -64,12 +64,22 @@ app.use(express.static('public'));
 
 // get users
 app.get("/users", async (req, res, next) => {
-    const sqlTotalString =
+    let { page, limit, search }: any = req.query;
+    let keywords = '';
+
+
+    let sqlTotalString =
         "SELECT COUNT(*) as totalUser FROM `users` WHERE user_status = ?";
-    const sqlDataString =
+    let sqlDataString =
         "SELECT * FROM `users` WHERE user_status = ? limit ? offset ?";
 
-    let { page, limit }: any = req.query;
+    if (search) {
+        keywords = search.trim();
+        sqlTotalString =
+            "SELECT COUNT(*) as totalUser FROM `users` WHERE (user_status = ? AND ( first_name LIKE ? OR last_name LIKE ? OR email LIKE ?))";
+        sqlDataString =
+            "SELECT * FROM `users` WHERE (user_status = ? AND ( first_name LIKE ? OR last_name LIKE ? OR email LIKE ?)) limit ? offset ?";
+    }
 
     page = page || 0;
     limit = limit || 5;
@@ -78,11 +88,11 @@ app.get("/users", async (req, res, next) => {
     const limitNum = parseInt(limit);
 
     const offset = pageIndex * limitNum;
-    const values = ["1", limitNum, offset];
 
     try {
         const totalUser = await new Promise((resolve, reject) => {
-            connection.query(sqlTotalString, ["1"], (error, results) => {
+            const compareTotal = keywords ? ["1", `%${keywords}%`, `%${keywords}%`, `%${keywords}%`] : ["1"];
+            connection.query(sqlTotalString, compareTotal, (error, results) => {
                 if (error) {
                     return reject(error);
                 }
@@ -92,7 +102,8 @@ app.get("/users", async (req, res, next) => {
         const total = totalUser[0].totalUser;
 
         const dataList = await new Promise((resolve, reject) => {
-            connection.query(sqlDataString, values, (error, results: ResultSetHeader[]) => {
+            const compareDatas = keywords ? ["1", `%${keywords}%`, `%${keywords}%`, `%${keywords}%`, limitNum, offset] : ["1", limitNum, offset];
+            connection.query(sqlDataString, compareDatas, (error, results: ResultSetHeader[]) => {
                 if (error) {
                     return reject(error);
                 }
