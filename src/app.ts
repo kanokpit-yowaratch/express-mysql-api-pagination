@@ -69,13 +69,13 @@ app.get("/users", async (req, res, next) => {
     const sqlDataString =
         "SELECT * FROM `users` WHERE user_status = ? limit ? offset ?";
 
-    let { reqPage, reqLimit } = req.query;
+    const { page, limit }: any = req.query;
 
-    const page = parseInt((reqPage || '1').toString());
-    const limit = parseInt((reqLimit || '5').toString());
+    const pageIndex = parseInt(page);
+    const limitNum = parseInt(limit);
 
-    const offset = (page - 1) * limit;
-    const values = ["1", limit, offset];
+    const offset = pageIndex * limitNum;
+    const values = ["1", limitNum, offset];
 
     try {
         const totalUser = await new Promise((resolve, reject) => {
