@@ -8,6 +8,7 @@ import multer from 'multer';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from "./swagger.json";
 import dotenv from 'dotenv';
+import * as routes from './routes';
 
 const saltRounds = 10;
 const secret = "full-stack-login-2024";
@@ -340,6 +341,8 @@ app.post("/authen", (req, res, next) => {
         res.json({ status: "error", message: error.message });
     }
 });
+
+app.get("/noi", routes.noi);
 
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
