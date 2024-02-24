@@ -1,6 +1,6 @@
 import * as routes from '../../src/routes'
 
-describe('app', () => {
+describe('routes', () => {
     it('test route noi', () => {
         const request = { query: { id: 1, name: 'noi' } };
         const result = routes.noi(request, null);
