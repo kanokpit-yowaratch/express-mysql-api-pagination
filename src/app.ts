@@ -351,7 +351,7 @@ app.get('/salt', (req, res) => {
 app.get("/noi", routes.noi);
 
 const corsOptions = {
-    origin: ['http://localhost', 'http://localhost:3000', 'https://suaipisuai.com'],
+    origin: ['http://localhost:3000', 'https://suaipisuai.com'],
     // credentials: true,
     optionSuccessStatus: 200
 }
