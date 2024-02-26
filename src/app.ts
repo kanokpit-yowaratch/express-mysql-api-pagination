@@ -344,13 +344,19 @@ app.post("/authen", (req, res, next) => {
 
 app.get("/noi", routes.noi);
 
-const corsOptions = {
-    origin: 'http://heeb.com',
-    // credentials: true,
-    optionSuccessStatus: 200
+const allowlist = ['http://localhost:3000', 'http://example1.com', 'https://suaipisuai.com'];
+const corsOptionsDelegate = function (req, callback) {
+    let corsOptions;
+    if (allowlist.indexOf(req.header('Origin')) !== -1) {
+        corsOptions = { origin: true };
+    } else {
+        corsOptions = { origin: false };
+    }
+    console.log(corsOptions);
+    callback(null, corsOptions);
 }
 
-app.get('/my-character', cors(corsOptions), (req, res) => {
+app.get('/my-character', cors(corsOptionsDelegate), (req, res) => {
     res.json({
         message: 'My Character',
         users: [
