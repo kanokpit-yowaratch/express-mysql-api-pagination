@@ -342,6 +342,28 @@ app.post("/authen", (req, res, next) => {
     }
 });
 
+const corsOptions = {
+    origin: ['http://localhost', 'http://localhost:3000', 'https://suaipisuai.com'],
+    credentials: true,
+    optionSuccessStatus: 200
+}
+
+app.get('/my-character', cors(corsOptions), (req, res) => {
+    res.json({
+        message: 'My Character',
+        users: [
+            {
+                id: 1,
+                name: 'Noi Vinsmoke'
+            },
+            {
+                id: 2,
+                name: 'Unknown God'
+            }
+        ]
+    });
+});
+
 app.get("/noi", routes.noi);
 
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
