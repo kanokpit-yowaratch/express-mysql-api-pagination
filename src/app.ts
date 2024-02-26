@@ -342,43 +342,15 @@ app.post("/authen", (req, res, next) => {
     }
 });
 
-app.get("/noi", routes.noi);
-
-const allowlist = ['http://example1.com', 'https://suaipisuai.com'];
-const corsOptionsDelegate = function (req, callback) {
-    let corsOptions;
-    if (allowlist.indexOf(req.header('Origin')) !== -1) {
-        corsOptions = { origin: true };
-    } else {
-        corsOptions = { origin: false };
-    }
-    console.log(corsOptions);
-    callback(null, corsOptions);
+const corsOptions = {
+    origin: 'http://suaipisuai.com',
+    credentials: true,
+    optionSuccessStatus: 200
 }
 
-app.get('/my-character', cors(corsOptionsDelegate), (req, res) => {
-    res.json({
-        message: 'My Character',
-        users: [
-            {
-                id: 1,
-                name: 'Noi Vinsmoke'
-            },
-            {
-                id: 2,
-                name: 'Unknown God'
-            }
-        ]
-    });
-});
+app.get("/noi", cors(corsOptions), routes.noi);
 
-app.get("/", (req, res) => {
-    res.json({
-        message: 'สมศรี หักคอหมีด้วยมือเปล่า'
-    });
-});
-
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const port = process.env.API_PORT;
 app.listen(port, () => {
