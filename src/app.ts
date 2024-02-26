@@ -342,6 +342,8 @@ app.post("/authen", (req, res, next) => {
     }
 });
 
+app.get("/noi", routes.noi);
+
 const corsOptions = {
     origin: ['http://localhost', 'http://localhost:3000', 'https://suaipisuai.com'],
     credentials: true,
@@ -363,8 +365,6 @@ app.get('/my-character', cors(corsOptions), (req, res) => {
         ]
     });
 });
-
-app.get("/noi", routes.noi);
 
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
