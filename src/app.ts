@@ -342,12 +342,6 @@ app.post("/authen", (req, res, next) => {
     }
 });
 
-app.get('/salt', (req, res) => {
-    res.json({
-        message: 'เค็ม แต่ดี'
-    });
-});
-
 app.get("/noi", routes.noi);
 
 const corsOptions = {
@@ -372,7 +366,13 @@ app.get('/my-character', cors(corsOptions), (req, res) => {
     });
 });
 
-app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get("/", (req, res) => {
+    res.json({
+        message: 'เค็ม แต่ดี'
+    });
+});
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const port = process.env.API_PORT;
 app.listen(port, () => {
