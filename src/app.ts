@@ -368,7 +368,7 @@ app.get('/my-character', cors(corsOptions), (req, res) => {
 
 app.get("/", (req, res) => {
     res.json({
-        message: 'เค็ม แต่ดี'
+        message: 'สมศรี หักคอหมีด้วยมือเปล่า'
     });
 });
 

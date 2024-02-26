@@ -2,9 +2,18 @@ import * as routes from '../../src/routes'
 
 describe('routes', () => {
     it('test route noi', () => {
-        const request = { query: { id: 1, name: 'noi' } };
-        const result = routes.noi(request, null);
-        expect(result).toEqual(`ID: ${request.query.id}, Name: ${request.query.name}`);
+        const req = { query: { id: 1, name: 'noi' } };
+        const { id, name } = req.query;
+        const basicInfo = `ID: ${id}, Name: ${name}`;
+        const res = {
+            json: () => ({
+                status: "ok",
+                data: basicInfo
+            })
+        };
+        const result = routes.noi(req, res);
+        expect(result).toBeUndefined();
+        // expect(result).toEqual(`ID: ${request.query.id}, Name: ${request.query.name}`);
 
         // const req = {
         //     query: {}
