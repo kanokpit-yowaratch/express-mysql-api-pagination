@@ -344,7 +344,7 @@ app.post("/authen", (req, res, next) => {
 
 app.get("/noi", routes.noi);
 
-const allowlist = ['http://localhost:3000', 'http://example1.com', 'https://suaipisuai.com'];
+const allowlist = ['http://example1.com', 'https://suaipisuai.com'];
 const corsOptionsDelegate = function (req, callback) {
     let corsOptions;
     if (allowlist.indexOf(req.header('Origin')) !== -1) {
