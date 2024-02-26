@@ -345,7 +345,7 @@ app.post("/authen", (req, res, next) => {
 app.get("/noi", routes.noi);
 
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://suaipisuai.com'],
+    origin: ['http://heeb.com', 'https://suaipisuai.com'],
     // credentials: true,
     optionSuccessStatus: 200
 }
