@@ -342,6 +342,12 @@ app.post("/authen", (req, res, next) => {
     }
 });
 
+app.get('/salt', (req, res) => {
+    res.json({
+        message: 'เค็ม แต่ดี'
+    });
+});
+
 app.get("/noi", routes.noi);
 
 const corsOptions = {
