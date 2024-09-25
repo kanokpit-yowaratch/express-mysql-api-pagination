@@ -4,6 +4,21 @@ REST API by Express.js and MySQL with Pagination
 # Tech Stack, Tools, Libs
 `Express.js` `TypeScript` `Swagger` `mysql2` `JWT` `bcrypt` `multer` `dotenv`
 
+
+## Run app
+
+```
+npm install
+npm run dev
+```
+
+## Production build
+
+```
+npm run build
+npm run start
+```
+
 # Configuration file
 `.env` file as follows:
 
