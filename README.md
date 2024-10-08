@@ -23,8 +23,8 @@ npm run start
 `.env` file as follows:
 
 <ul>
-<li>API_PORT=[avoid 5000]</li>
-<li>DB_HOST=localhost</li>
+<li>API_PORT=</li>
+<li>DB_HOST=</li>
 <li>DB_PORT=3306</li>
 <li>DB_USERNAME=</li>
 <li>DB_PASSWORD=</li>
@@ -33,4 +33,4 @@ npm run start
 
 ## Demo
 
-[free-api.asia/users](https://free-api.asia/users)
+[free-api.asia/users](https://free-api.asia/api/users)
