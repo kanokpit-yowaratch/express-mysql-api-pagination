@@ -27,11 +27,12 @@ const corsOptions = {
 }
 
 app.get("/noi", cors(corsOptions), noi);
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // --- start error handler --- //
-app.use((_req, _res, next) => {
-	next(createHttpError(httpStatus.NOT_FOUND));
-});
+// app.use((_req, _res, next) => {
+// 	next(createHttpError(httpStatus.NOT_FOUND));
+// });
 
 app.use((error, _req, res, _next) => {
 	const statusCode = error.status || httpStatus.INTERNAL_SERVER_ERROR;
@@ -45,8 +46,6 @@ app.use((error, _req, res, _next) => {
 	});
 });
 // --- end error handler --- //
-
-app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const port = process.env.API_PORT;
 // app.listen(port, () => {
