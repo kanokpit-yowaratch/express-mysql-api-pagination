@@ -1,8 +1,10 @@
 import express, { Request, Response, NextFunction } from "express";
 import { connectionState } from "../db-config";
 import { MulterRequest, upload, User } from "../interfaces/common.interface";
-import { ResultSetHeader } from "mysql2/promise";
+import * as v from '../validators/user.validator';
 import bcrypt from 'bcrypt';
+import { validator } from "../validators/validation-handler";
+import httpStatus from "http-status";
 
 const router = express.Router();
 const saltRounds = 10;
@@ -134,7 +136,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
 // });
 
 // Create user
-router.post("/", async (req, res, next) => {
+router.post("/", validator(v.create), async (req, res, next) => {
     const { username, password, email, first_name, last_name } = req.body;
     const { connection } = await connectionState();
     try {
@@ -194,7 +196,7 @@ router.post("/update-avatar", upload.single('avatar'), async (req: MulterRequest
         }
         if (!id || !file) {
             const err = new Error('Error');
-            err.message = 'Error 400: Bad Request.';
+            err.message = `Error ${httpStatus.BAD_REQUEST}: Bad Request.`;
             throw err;
         }
 
