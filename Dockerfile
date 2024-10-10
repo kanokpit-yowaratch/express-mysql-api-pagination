@@ -13,8 +13,6 @@ COPY . /usr/src/app-asia
 
 RUN npm run build
 
-#COPY . .
-
 EXPOSE 3456
 RUN chown -R node /usr/src/app-asia
 CMD [ "npm", "start" ]
