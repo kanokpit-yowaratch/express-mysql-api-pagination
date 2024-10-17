@@ -61,7 +61,9 @@ server.listen(port, () => {
 const quit = async (signal: string) => {
 	console.log(`${signal} signal received: closing HTTP server`);
 	const { connection } = await connectionState();
-	connection.end();
+	if (connection) {
+		connection.end();
+	}
 	console.log('DB connection closed.');
 	server.close();
 	console.log('HTTP server closed.');

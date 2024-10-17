@@ -28,7 +28,9 @@ router.post("/register", async (req: Request, res: Response, next: NextFunction)
         });
     } catch (error) {
         console.log(error);
-        connection.end();
+        if (connection) {
+            connection.end();
+        }
         return res.status(500).send();
     }
 });

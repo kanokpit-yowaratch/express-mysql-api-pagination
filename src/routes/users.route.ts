@@ -87,7 +87,9 @@ router.get("/", async (req, res, next) => {
         } else {
             console.log(error);
         }
-        connection.end();
+        if (connection) {
+            connection.end();
+        }
         // sqlState: '42S02',
         // sqlMessage: "Table 'noi_live_code.users7' doesn't exist",
         // sql: "SELECT COUNT(*) as totalUser FROM `users7` WHERE user_status = '1'"
@@ -156,7 +158,9 @@ router.post("/", validator(v.create), async (req, res, next) => {
         });
     } catch (error) {
         console.log(error);
-        connection.end();
+        if (connection) {
+            connection.end();
+        }
         return res.status(500).send();
     }
 });
@@ -177,7 +181,9 @@ router.put("/", async (req, res, next) => {
         return res.status(200).json({ status: "ok", message: "User updated successfully!" });
     } catch (error) {
         console.log(error);
-        connection.end();
+        if (connection) {
+            connection.end();
+        }
         return res.status(500).send({ message: error.message });
     }
 });
@@ -210,7 +216,9 @@ router.post("/update-avatar", upload.single('avatar'), async (req: MulterRequest
 
     } catch (error) {
         console.log(error);
-        connection.end();
+        if (connection) {
+            connection.end();
+        }
         return res.status(500).send({ message: error.message });
     }
 });
@@ -231,7 +239,9 @@ router.delete("/:id", async (req, res, next) => {
         return res.status(200).json({ status: "ok", message: "User updated successfully!" });
 
     } catch (error) {
-        connection.end();
+        if (connection) {
+            connection.end();
+        }
         console.log(error);
         return res.status(500).send({ message: error.message });
     }
