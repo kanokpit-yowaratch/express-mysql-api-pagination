@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import { connectionState } from "../db-config";
-import { MulterRequest, upload, User } from "../interfaces/common.interface";
+import { MulterRequest, ResultResponse, upload, User } from "../interfaces/common.interface";
 import * as v from '../validators/user.validator';
 import bcrypt from 'bcrypt';
 import { validator } from "../validators/validation-handler";
@@ -65,14 +65,15 @@ router.get("/", async (req, res, next) => {
         }
 
         const totalPage = Math.ceil(+total / limit);
-
-        res.json({
+        const responseData: ResultResponse = {
             data: dataList,
             total: total,
             pages: totalPage,
-            limit: limit,
-            currentPage: page,
-        });
+            limit: limitNum,
+            currentPage: pageIndex + 1,
+        }
+
+        res.json(responseData);
     } catch (error) {
         if (error.sqlMessage || error.code || error.errno) {
             if (error.sqlMessage) {

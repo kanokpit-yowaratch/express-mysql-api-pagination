@@ -25,3 +25,11 @@ export interface User extends ResultSetHeader {
     avatar: string;
     avatar_name: string;
 }
+
+export type ResultResponse = {
+    data: any[];
+    total: number;
+    pages: number;
+    limit: number;
+    currentPage: number;
+}
