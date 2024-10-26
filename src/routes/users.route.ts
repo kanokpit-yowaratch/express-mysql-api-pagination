@@ -167,7 +167,7 @@ router.post("/", validator(v.create), async (req, res, next) => {
 });
 
 // Update [email, first_name, last_name]
-router.put("/", async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
     const { email, first_name, last_name, username } = req.body;
     const { connection } = await connectionState();
     try {
