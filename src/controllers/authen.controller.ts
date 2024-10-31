@@ -7,8 +7,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 		return res
 			.status(201)
 			.json({ message: "Register successfully.", newUserId });
-
-	} catch (error: any) {
+	} catch (error) {
 		const { message } = error;
 		return res.status(500).json({ message });
 	}
@@ -20,17 +19,16 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 		return res
 			.status(201)
 			.json({ message: "Login successfully.", token });
-
-	} catch (error: any) {
+	} catch (error) {
 		const { message } = error;
 		return res.status(500).json({ message });
 	}
 };
 
-const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+const authenticate = (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const token = req.headers.authorization.split(" ")[1];
-		const tokenInfo = await authenService.authenticate(token);
+		const tokenInfo = authenService.authenticate(token);
 		return res
 			.status(201)
 			.json({ message: "Verify successfully.", tokenInfo });
