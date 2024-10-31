@@ -16,7 +16,7 @@ const app = express();
 app.use(cors());
 app.use(checkConnectionState);
 app.use(express.json({ limit: "2mb" }));
-app.use(express.urlencoded({ limit: "2mb" }));
+app.use(express.urlencoded({ limit: "2mb", extended: true }));
 app.use(express.static('public'));
 // app.use(limiter);
 

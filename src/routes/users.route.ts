@@ -5,9 +5,9 @@ import * as v from '../validators/user.validator';
 import bcrypt from 'bcrypt';
 import { validator } from "../validators/validation-handler";
 import httpStatus from "http-status";
+import { saltRounds } from "../types/constants";
 
 const router = express.Router();
-const saltRounds = 10;
 
 // get users
 router.get("/", async (req, res, next) => {
