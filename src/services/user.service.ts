@@ -1,10 +1,10 @@
 import { connectionState } from "../db-config";
 import bcrypt from 'bcrypt';
 import { saltRounds, UserQueryParams } from '../types/constants';
-import { User } from "../interfaces/common.interface";
 import createHttpError from "http-errors";
 import httpStatus from "http-status";
 import { checkUserExist } from "./common.service";
+import { User } from "../types/interfaces";
 
 const getUsers = async (params: UserQueryParams, protocol: string, host: string) => {
 	const { connection } = await connectionState();
