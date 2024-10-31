@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { User } from "../interfaces/common.interface";
 import createHttpError from "http-errors";
 import httpStatus from "http-status";
+import { checkUserExist } from "./common.service";
 // import { Connection } from "mysql2/promise";
 
 const register = async (params: User) => {
@@ -14,10 +15,17 @@ const register = async (params: User) => {
 	// Middleware has already been checked.
 	// checkConnection(connection);
 
+	const exist = await checkUserExist(connection, email);
+	if (exist) {
+		throw createHttpError(httpStatus.BAD_REQUEST, {
+			message: 'User already exists.',
+		});
+	}
+
 	const passwordHash = await bcrypt.hash(password, saltRounds);
 	const sql = "INSERT INTO users(username, password, email, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
 	const compareDatas = [email, passwordHash, email, first_name, last_name];
-	const [results]: any = await connection.query(sql, compareDatas);
+	const [results]: any[] = await connection.query(sql, compareDatas);
 	return results.insertId;
 }
 
@@ -30,7 +38,7 @@ const login = async (params: User) => {
 	// checkConnection(connection);
 
 	const sql = "SELECT * FROM `users` WHERE email=?";
-	const [results]: any = await connection.execute(sql, [email]);
+	const [results]: any[] = await connection.execute(sql, [email]);
 	const userData = results ? results[0] : null;
 
 	if (!userData) {
@@ -53,15 +61,9 @@ const login = async (params: User) => {
 	}
 }
 
-const authenticate = async (token: string) => {
-	try {
-		const decode = jwt.verify(token, secret);
-		return decode;
-	} catch (error) {
-		throw createHttpError(httpStatus.BAD_REQUEST, {
-			message: 'Decode error.',
-		});
-	}
+const authenticate = (token: string) => {
+	const decode = jwt.verify(token, secret);
+	return decode;
 }
 
 // Middleware has already been checked.
