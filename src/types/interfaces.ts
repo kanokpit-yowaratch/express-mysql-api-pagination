@@ -36,3 +36,9 @@ export type ResultResponse = {
 	limit: number;
 	currentPage: number;
 }
+
+export type UserQueryParams = {
+	search?: string;
+	page?: string;
+	limit?: string;
+};

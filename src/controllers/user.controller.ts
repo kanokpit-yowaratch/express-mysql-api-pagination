@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { ResultResponse } from "../interfaces/common.interface";
 import * as userService from '../services/user.service';
+import { ResultResponse } from "../types/interfaces";
 
 const getUsers = async (req: Request, res: Response, next: NextFunction) => {
 	try {
